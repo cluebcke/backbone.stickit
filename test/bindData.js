@@ -1689,4 +1689,42 @@ test('bindings:selectOptions:defaultOption:OptGroups', 8, function() {
     equal(view._modelBindings.length, 0);
   });
 
+  test('model can be triggered', 2, function() {
+    var model1 = new (Backbone.Model)({id:1, remedy:'anbesol' });
+
+    // This should be called twice
+    model1.on('change:remedy', function() {
+      ok(true);
+    });
+
+    // First verify that trigger is called without error prior to calling stickit()
+    model1.trigger('change:remedy');
+
+    var testView = new (Backbone.View.extend({
+
+      initialize: function() {
+        this.model = model1;
+      },
+
+      bindings: {
+        '#test26-text': 'remedy'
+      },
+
+      render: function() {
+        var html = document.getElementById('jst26').innerHTML;
+        this.$el.html(_.template(html)());
+        this.stickit();
+        return this;
+      }
+
+    }));
+
+    $('#qunit-fixture').html(testView.render().el);
+
+    model1.trigger('change:remedy');
+
+    testView.remove();
+
+  });
+
 });
