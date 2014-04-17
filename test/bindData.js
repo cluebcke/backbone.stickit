@@ -1721,7 +1721,7 @@ test('bindings:selectOptions:defaultOption:OptGroups', 8, function() {
 
     $('#qunit-fixture').html(testView.render().el);
 
-    model1.trigger('change:remedy');
+    model1.trigger('change:remedy', model1);
 
     testView.remove();
 
